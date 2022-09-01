@@ -8,6 +8,30 @@ fi
 
 buildDir=$(pwd)
 
+#################################
+#   :::::: C O L O R S ::::::   #
+#################################
+
+CDEF=" \033[0m"                                     # default color
+CCIN=" \033[0;36m"                                  # info color
+CGSC=" \033[0;32m"                                  # success color
+CRER=" \033[0;31m"                                  # error color
+CWAR=" \033[0;33m"                                  # waring color
+b_CDEF=" \033[1;37m"                                # bold default color
+b_CCIN=" \033[1;36m"                                # bold info color
+b_CGSC=" \033[1;32m"                                # bold success color
+b_CRER=" \033[1;31m"                                # bold error color
+b_CWAR=" \033[1;33m"
+
+# "-s"|"--success")
+#       echo -e "${b_CGSC}${@/-s/}${CDEF}";;    # print success message
+#     "-e"|"--error")
+#       echo -e "${b_CRER}${@/-e/}${CDEF}";;    # print error message
+#     "-w"|"--warning")
+#       echo -e "${b_CWAR}${@/-w/}${CDEF}";;    # print warning message
+#     "-i"|"--info")
+#       echo -e "${b_CCIN}${@/-i/}${CDEF}";;
+
 # Update packages list
 ${SUDO} apt update
 ${SUDO} apt upgrade -y
@@ -63,18 +87,17 @@ echo "### SETTING UP APPEARANCE ###"
 cd $buildDir
 # ${SUDO} mkdir -p /boot/grub/themes/acer
 # ${SUDO} tar xvf themes/acer.tar -C /boot/grub/themes/acer
-${SUDO} apt -y install imagemagick
+${SUDO} apt -y install imagemagick plymouth plymouth-themes
+${SUDO} cp -r /etc/default/grub /etc/default/grub.old
+${SUDO} cp -r config/grub /etc/default/grub
 git clone https://github.com/vinceliuice/grub2-themes.git
 cp -r images/bg.png grub2-themes/background.jpg
 cd grub2-themes
 ${SUDO} ./install.sh -b -t whitesur -s 1080p
 ${SUDO} grub-mkconfig -o /boot/grub/grub.cfg
 cd ..
-${SUDO} install -y plymouth plymouth-themes
 ${SUDO} tar xvf themes/debian-logo.tar.xz -C /usr/share/plymouth/themes/
 ${SUDO} plymouth-set-default-theme -R debian-logo
-${SUDO} cp -r /etc/default/grub /etc/default/grub.old
-${SUDO} cp -r config/grub /etc/default/grub
 ${SUDO} update-grub
 
 # Layan Cursors
