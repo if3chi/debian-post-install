@@ -1,13 +1,4 @@
 #!/bin/bash
-# To add this repository please do:
-echo "### BEGIN POST INSTALL ###"
-
-if [ "$(whoami)" != "root" ]; then
-    SUDO=sudo
-fi
-
-buildDir=$(pwd)
-
 #################################
 #   :::::: C O L O R S ::::::   #
 #################################
@@ -21,16 +12,36 @@ b_CDEF=" \033[1;37m"                                # bold default color
 b_CCIN=" \033[1;36m"                                # bold info color
 b_CGSC=" \033[1;32m"                                # bold success color
 b_CRER=" \033[1;31m"                                # bold error color
-b_CWAR=" \033[1;33m"
+b_CWAR=" \033[1;33m"                                # bold warning color
 
-# "-s"|"--success")
-#       echo -e "${b_CGSC}${@/-s/}${CDEF}";;    # print success message
-#     "-e"|"--error")
-#       echo -e "${b_CRER}${@/-e/}${CDEF}";;    # print error message
-#     "-w"|"--warning")
-#       echo -e "${b_CWAR}${@/-w/}${CDEF}";;    # print warning message
-#     "-i"|"--info")
-#       echo -e "${b_CCIN}${@/-i/}${CDEF}";;
+#######################################
+#   :::::: F U N C T I O N S ::::::   #
+#######################################
+
+# echo like ... with flag type and display message colors
+prompt () {
+  case ${1} in
+    "-s"|"--success")
+      echo -e "${b_CGSC}${@/-s/}${CDEF}";;    # print success message
+    "-e"|"--error")
+      echo -e "${b_CRER}${@/-e/}${CDEF}";;    # print error message
+    "-w"|"--warning")
+      echo -e "${b_CWAR}${@/-w/}${CDEF}";;    # print warning message
+    "-i"|"--info")
+      echo -e "${b_CCIN}${@/-i/}${CDEF}";;    # print info message
+    *)
+    echo -e "$@"
+    ;;
+  esac
+}
+
+prompt -i "### BEGIN POST INSTALL ###"
+
+if [ "$(whoami)" != "root" ]; then
+    SUDO=sudo
+fi
+
+buildDir=$(pwd)
 
 # Update packages list
 ${SUDO} apt update
@@ -59,7 +70,7 @@ ${SUDO} adduser $USER libvirt
 ${SUDO} adduser $USER libvirt-qemu
 
 # Install Packages
-echo "### INSTALLING PACKAGES ###"
+prompt -i "### INSTALLING PACKAGES ###"
 ${SUDO} dpkg -i "$buildDir/packages/ulauncher_5.14.7_all.deb"
 ${SUDO} apt install -f
 
@@ -80,10 +91,10 @@ ${SUDO} curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sur
 ${SUDO} sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
 ${SUDO} apt update
 ${SUDO} apt -y install php8.1 php8.1-{bcmath,fpm,xml,mysql,zip,intl,ldap,gd,cli,bz2,curl,mbstring,pgsql,opcache,soap,cgi}
-echo "### INSTALLING PACKAGES DONE ###"
+prompt -s "### INSTALLING PACKAGES DONE ###"
 
 # Setup Appearance
-echo "### SETTING UP APPEARANCE ###"
+prompt -i "### SETTING UP APPEARANCE ###"
 cd $buildDir
 # ${SUDO} mkdir -p /boot/grub/themes/acer
 # ${SUDO} tar xvf themes/acer.tar -C /boot/grub/themes/acer
@@ -112,10 +123,10 @@ cd /usr/share/themes/
 ${SUDO} git clone https://github.com/EliverLara/Nordic.git
 gsettings set org.gnome.desktop.interface gtk-theme "Nordic"
 gsettings set org.gnome.desktop.wm.preferences theme "Nordic"
-echo "### SETTING UP APPEARANCE DONE ###"
+prompt -s "### SETTING UP APPEARANCE DONE ###"
 
 # Customize zsh
-echo "### CUSTOMIZING ZSH ###"
+prompt -i "### CUSTOMIZING ZSH ###"
 cd $buildDir
 ${SUDO} cp -r fonts /usr/share/fonts
 fc-cache -vf
@@ -127,6 +138,6 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$
 touch "$HOME/.zsh_history"
 touch "$HOME/.histfile"
 cp -r "$buildDir/config/.p10k.zsh" $HOME
-echo "### CUSTOMIZING ZSH DONE ###"
+prompt -i "### CUSTOMIZING ZSH DONE ###"
 
-echo "### POST INSTALLATION DONE ###"
+prompt -s "### POST INSTALLATION DONE ###"
