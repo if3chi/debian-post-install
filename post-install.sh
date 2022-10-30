@@ -54,7 +54,7 @@ gnome-logs gnome-menus gnome-system-monitor gnome-text-editor seahorse avahi-dae
  libreoffice-writer network-manager-gnome transmission-gtk
 
 ${SUDO} apt -y install apt-transport-https lsb-release ca-certificates curl ufw vlc timeshift nvidia-detect \
-zsh neofetch htop build-essential dkms linux-headers-$(uname -r) gnupg
+zsh neofetch htop build-essential dkms linux-headers-$(uname -r) gnupg wget
 
 # Install Nvidia driver
 ${SUDO} nvidia-detect
@@ -89,13 +89,15 @@ ${SUDO} usermod -aG docker $USER
 
 # GO
 wget https://go.dev/dl/go1.19.2.linux-amd64.tar.gz
+${SUDO} rm -rf /usr/local/go && tar -C /usr/local -xzf go1.19.2.linux-amd64.tar.gz
+# export PATH=$PATH:/usr/local/go/bin
 
 # Php
-${SUDO} curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
-${SUDO} sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
-${SUDO} apt update
-${SUDO} apt -y install php8.1 php8.1-{bcmath,fpm,xml,mysql,zip,intl,ldap,gd,cli,bz2,curl,mbstring,pgsql,opcache,soap,cgi}
-prompt -s "### INSTALLING PACKAGES DONE ###"
+#${SUDO} curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
+#${SUDO} sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
+#${SUDO} apt update
+#${SUDO} apt -y install php8.1 php8.1-{bcmath,fpm,xml,mysql,zip,intl,ldap,gd,cli,bz2,curl,mbstring,pgsql,opcache,soap,cgi}
+#prompt -s "### INSTALLING PACKAGES DONE ###"
 
 # Setup Appearance
 prompt -i "### SETTING UP APPEARANCE ###"
