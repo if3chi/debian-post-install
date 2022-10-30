@@ -87,6 +87,9 @@ ${SUDO} apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 ${SUDO} groupadd docker
 ${SUDO} usermod -aG docker $USER
 
+# GO
+wget https://go.dev/dl/go1.19.2.linux-amd64.tar.gz
+
 # Php
 ${SUDO} curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
 ${SUDO} sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
