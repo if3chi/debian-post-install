@@ -50,7 +50,8 @@ ${SUDO} apt upgrade -y
 # Install gnome desktop
 ${SUDO} apt -y install gnome-session gnome-terminal firefox-esr gnome-tweaks gnome-disk-utility gnome-font-viewer \
 gnome-shell-extensions-prefs gnome-calculator gnome-characters gnome-control-center gnome-color-manager gnome-keyring \
-gnome-logs gnome-menus gnome-system-monitor gnome-text-editor
+gnome-logs gnome-menus gnome-system-monitor gnome-text-editor seahorse avahi-daemon file-roller gstreamer1.0-libav  libgsf-bin \
+ libreoffice-writer network-manager-gnome transmission-gtk
 
 ${SUDO} apt -y install apt-transport-https lsb-release ca-certificates curl ufw vlc timeshift nvidia-detect \
 zsh neofetch htop build-essential dkms linux-headers-$(uname -r) gnupg
